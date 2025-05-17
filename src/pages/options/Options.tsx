@@ -83,21 +83,39 @@ const Options: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            <div className="relative">
               <Label>Start Time</Label>
-              <Input
-                type="time"
-                value={bedtime.startTime}
-                onChange={(e) => updateBedtime({ startTime: e.target.value })}
-              />
+              <div
+                className="relative cursor-pointer"
+                onClick={(e) => {
+                  const input = e.currentTarget.querySelector('input');
+                  if (input) input.showPicker();
+                }}
+              >
+                <Input
+                  type="time"
+                  value={bedtime.startTime}
+                  onChange={(e) => updateBedtime({ startTime: e.target.value })}
+                  className="w-full"
+                />
+              </div>
             </div>
-            <div>
+            <div className="relative">
               <Label>End Time</Label>
-              <Input
-                type="time"
-                value={bedtime.endTime}
-                onChange={(e) => updateBedtime({ endTime: e.target.value })}
-              />
+              <div
+                className="relative cursor-pointer"
+                onClick={(e) => {
+                  const input = e.currentTarget.querySelector('input');
+                  if (input) input.showPicker();
+                }}
+              >
+                <Input
+                  type="time"
+                  value={bedtime.endTime}
+                  onChange={(e) => updateBedtime({ endTime: e.target.value })}
+                  className="w-full"
+                />
+              </div>
             </div>
           </div>
         </div>
