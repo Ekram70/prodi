@@ -1,0 +1,4 @@
+html {
+  /* fallback grayscale if JS fails */
+  filter: grayscale(100%) !important;
+}

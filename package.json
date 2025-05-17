@@ -1,0 +1,38 @@
+{
+  "name": "prodi",
+  "version": "1.0.0",
+  "description": "A productivity Chrome extension with time limits and bedtime mode",
+  "scripts": {
+    "build": "rm -rf dist && vite build && npm run copy-static && npm run postbuild",
+    "watch": "vite build --watch",
+    "dev": "vite",
+    "copy-static": "cp src/manifest.json dist/ && mkdir -p dist/pages/popup dist/pages/options dist/icons dist/content && cp src/pages/popup/index.html dist/pages/popup/ && cp src/pages/options/index.html dist/pages/options/ && cp src/content/grayscale.css dist/content/ && cp -r src/icons/* dist/icons/ && cp dist/assets/styles.css dist/pages/popup/ && cp dist/assets/styles.css dist/pages/options/",
+    "postbuild": "node scripts/patch-html.js"
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-select": "^2.0.0",
+    "@radix-ui/react-slider": "^1.1.2",
+    "@radix-ui/react-switch": "^1.0.3",
+    "@radix-ui/react-toast": "^1.1.5",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "lucide-react": "^0.323.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwind-merge": "^2.2.1",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.260",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "@vitejs/plugin-react": "^4.4.1",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.3.3",
+    "vite": "^6.3.5"
+  }
+}

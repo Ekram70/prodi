@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "Prodi",
+  "version": "1.0.0",
+  "description": "A productivity Chrome extension with time limits and bedtime mode",
+  "permissions": ["storage", "tabs", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_popup": "pages/popup/index.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "background": {
+    "service_worker": "background/service-worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/grayscale.js"],
+      "css": ["content/grayscale.css"]
+    }
+  ],
+  "options_page": "pages/options/index.html"
+}
