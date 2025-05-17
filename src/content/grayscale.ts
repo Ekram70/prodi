@@ -1,34 +1,45 @@
 // Check if we're in bedtime mode
 async function checkBedtimeMode() {
-  const settings = await chrome.storage.sync.get('settings');
-  const bedtime = settings.settings?.bedtime;
+  try {
+    const settings = await chrome.storage.sync.get('settings');
+    const bedtime = settings.settings?.bedtime;
 
-  if (!bedtime?.enabled) {
+    // If settings or bedtime is not initialized, remove grayscale and return
+    if (!settings.settings || !bedtime) {
+      removeGrayscaleFilter();
+      return;
+    }
+
+    if (!bedtime.enabled) {
+      removeGrayscaleFilter();
+      return;
+    }
+
+    const now = new Date();
+    const currentTime = now.getHours() * 60 + now.getMinutes();
+    const [startHour, startMinute] = bedtime.startTime.split(':').map(Number);
+    const [endHour, endMinute] = bedtime.endTime.split(':').map(Number);
+
+    const startTime = startHour * 60 + startMinute;
+    const endTime = endHour * 60 + endMinute;
+
+    // Handle overnight bedtime (e.g., 23:00 to 06:00)
+    if (startTime > endTime) {
+      if (currentTime >= startTime || currentTime < endTime) {
+        applyGrayscaleFilter();
+      } else {
+        removeGrayscaleFilter();
+      }
+    } else {
+      if (currentTime >= startTime && currentTime < endTime) {
+        applyGrayscaleFilter();
+      } else {
+        removeGrayscaleFilter();
+      }
+    }
+  } catch (error) {
+    console.error('Error checking bedtime mode:', error);
     removeGrayscaleFilter();
-    return;
-  }
-
-  const now = new Date();
-  const currentTime = now.getHours() * 60 + now.getMinutes();
-  const [startHour, startMinute] = bedtime.startTime.split(':').map(Number);
-  const [endHour, endMinute] = bedtime.endTime.split(':').map(Number);
-
-  const startTime = startHour * 60 + startMinute;
-  const endTime = endHour * 60 + endMinute;
-
-  // Handle overnight bedtime (e.g., 23:00 to 06:00)
-  if (startTime > endTime) {
-    if (currentTime >= startTime || currentTime < endTime) {
-      applyGrayscaleFilter();
-    } else {
-      removeGrayscaleFilter();
-    }
-  } else {
-    if (currentTime >= startTime && currentTime < endTime) {
-      applyGrayscaleFilter();
-    } else {
-      removeGrayscaleFilter();
-    }
   }
 }
 
@@ -56,7 +67,12 @@ function removeGrayscaleFilter() {
   }
 }
 
-// Initial check
+// Run immediately when the script loads
+document.addEventListener('DOMContentLoaded', () => {
+  checkBedtimeMode();
+});
+
+// Also run immediately in case DOMContentLoaded already fired
 checkBedtimeMode();
 
 // Listen for storage changes

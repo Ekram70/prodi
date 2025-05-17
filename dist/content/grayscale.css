@@ -1,4 +1,1 @@
-html {
-  /* fallback grayscale if JS fails */
-  filter: grayscale(100%) !important;
-}
+/* This file is intentionally empty. Grayscale is controlled by JavaScript. */
